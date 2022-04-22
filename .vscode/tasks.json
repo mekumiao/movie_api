@@ -1,0 +1,245 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/src/Web/src/MovieAPI.Web.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "test",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["test"],
+      "problemMatcher": "$msCompile",
+      "detail": "dotnet test"
+    },
+    {
+      "label": "clean model of generated mapster",
+      "command": "dotnet",
+      "type": "process",
+      "options": { "cwd": "${workspaceFolder}/src/Model/src/" },
+      "args": ["msbuild", "-t:CleanGenerated"],
+      "problemMatcher": "$msCompile",
+      "detail": "dotnet msbuild -t:CleanGenerated"
+    },
+    {
+      "label": "generated model of mapster",
+      "command": "dotnet",
+      "type": "process",
+      "options": { "cwd": "${workspaceFolder}/src/Model/src/" },
+      "args": ["msbuild", "-t:Mapster"],
+      "problemMatcher": "$msCompile",
+      "detail": "dotnet msbuild -t:Mapster"
+    },
+    {
+      "label": "clean services of generated mapster",
+      "command": "dotnet",
+      "type": "process",
+      "options": { "cwd": "${workspaceFolder}/src/Services/src/" },
+      "args": ["msbuild", "-t:CleanGenerated"],
+      "problemMatcher": "$msCompile",
+      "detail": "dotnet msbuild -t:CleanGenerated"
+    },
+    {
+      "label": "generated services of mapster",
+      "command": "dotnet",
+      "type": "process",
+      "options": { "cwd": "${workspaceFolder}/src/Services/src/" },
+      "args": ["msbuild", "-t:Mapster"],
+      "problemMatcher": "$msCompile",
+      "detail": "dotnet msbuild -t:Mapster"
+    },
+    {
+      "label": "publish",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "publish",
+        "${workspaceFolder}/src/Web/src/MovieAPI.Web.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "publish to folder",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "publish",
+        "${workspaceFolder}/src/Web/src/MovieAPI.Web.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary",
+        "--output=${input:publish_iis_folder}"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "remove app_offline.htm",
+      "command": "remove-item",
+      "type": "shell",
+      "args": ["${input:publish_iis_folder}/app_offline.htm"],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "copy app_offline.htm",
+      "command": "copy-item",
+      "type": "shell",
+      "args": [
+        "${workspaceFolder}/src/Web/src/app_offline.htm",
+        "${input:publish_iis_folder}"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "publish to iis and restart",
+      "command": "write-output",
+      "type": "shell",
+      "args": ["Has been successfully"],
+      "dependsOn": [
+        "copy app_offline.htm",
+        "publish to folder",
+        "remove app_offline.htm"
+      ],
+      "problemMatcher": "$msCompile",
+      "dependsOrder": "sequence"
+    },
+    {
+      "label": "watch",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "watch",
+        "run",
+        "--project",
+        "${workspaceFolder}/src/Web/src/MovieAPI.Web.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    /// EFCore 迁移命令
+    {
+      "label": "dbcontext script (production)",
+      "command": "dotnet",
+      "options": { "cwd": "${workspaceFolder}/src/Web/src/" },
+      "type": "process",
+      "args": [
+        "ef",
+        "dbcontext",
+        "script",
+        "-o",
+        "${workspaceFolder}/movie_database.sql",
+        "--",
+        "--environment",
+        "Production"
+      ],
+      "problemMatcher": "$msCompile",
+      "detail": "dotnet ef dbcontext script"
+    },
+    {
+      "label": "update database (production)",
+      "command": "dotnet",
+      "options": { "cwd": "${workspaceFolder}/src/Web/src/" },
+      "type": "process",
+      "args": ["ef", "database", "update", "--", "--environment", "Production"],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "update database (development)",
+      "command": "dotnet",
+      "options": { "cwd": "${workspaceFolder}/src/Web/src/" },
+      "type": "process",
+      "args": ["ef", "database", "update"],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "add migration (production)",
+      "command": "dotnet",
+      "options": { "cwd": "${workspaceFolder}/src/Web/src/" },
+      "type": "process",
+      "args": [
+        "ef",
+        "migrations",
+        "add",
+        "${input:migrationName}",
+        "--project",
+        "../../Migrations/MovieMigrations/src/MovieAPI.MovieMigrations.csproj",
+        "--",
+        "--environment",
+        "production"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "add migration (development)",
+      "command": "dotnet",
+      "options": { "cwd": "${workspaceFolder}/src/Web/src/" },
+      "type": "process",
+      "args": [
+        "ef",
+        "migrations",
+        "add",
+        "${input:migrationName}",
+        "--project",
+        "../../Migrations/MovieMigrations.Development/src/MovieAPI.MovieMigrations.Development.csproj"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "remove migration (production)",
+      "command": "dotnet",
+      "options": { "cwd": "${workspaceFolder}/src/Web/src/" },
+      "type": "process",
+      "args": [
+        "ef",
+        "migrations",
+        "remove",
+        "--project",
+        "../../Migrations/MovieMigrations/src/MovieAPI.MovieMigrations.csproj",
+        "--force",
+        "--",
+        "--environment",
+        "production"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "remove migration (development)",
+      "command": "dotnet",
+      "options": { "cwd": "${workspaceFolder}/src/Web/src/" },
+      "type": "process",
+      "args": [
+        "ef",
+        "migrations",
+        "remove",
+        "--project",
+        "../../Migrations/MovieMigrations.Development/src/MovieAPI.MovieMigrations.Development.csproj",
+        "--force"
+      ],
+      "problemMatcher": "$msCompile"
+    }
+  ],
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "migrationName",
+      "description": "迁移文件名称",
+      "default": "MovieDatabase"
+    },
+    {
+      "type": "pickString",
+      "id": "publish_iis_folder",
+      "description": "发布目录",
+      "options": ["E:/wwwroot/movie"]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "omnisharp.organizeImportsOnFormat": true,
+  "omnisharp.enableImportCompletion": true,
+  "omnisharp.useEditorFormattingSettings": true,
+  "prettier.bracketSpacing": true,
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

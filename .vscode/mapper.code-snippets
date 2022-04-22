@@ -1,0 +1,23 @@
+{
+  "model mapper": {
+    "prefix": ["map", "mapper"],
+    "body": [
+      "using System.Linq.Expressions;",
+      "using Mapster;",
+      "using MovieAPI.DAL;",
+      "",
+      "namespace MovieAPI.Model.Mappers;",
+      "",
+      "[Mapper]",
+      "public interface I${1:Src}Mapper",
+      "{",
+      "    Expression<Func<${1:Src}, ${2:Dest}>> Projection { get; }",
+      "    ${2:Dest} Map(${1:Src} source);",
+      "    ${2:Dest} Map(${1:Src} source, ${2:Dest} target);",
+      "}",
+      ""
+    ],
+    "description": "model map to dto interface",
+    "scope": "csharp"
+  }
+}

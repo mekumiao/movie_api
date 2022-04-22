@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain.Core\src\MovieAPI.Domain.Core.csproj" />
+    <ProjectReference Include="..\..\..\DAL\src\MovieAPI.DAL.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,28 @@
+{
+  "DAL Configuation": {
+    "prefix": ["cfg", "configuation"],
+    "body": [
+      "using Microsoft.EntityFrameworkCore;",
+      "using Microsoft.EntityFrameworkCore.Metadata.Builders;",
+      "",
+      "namespace MovieAPI.DAL.EntityConfigurations;",
+      "",
+      "internal class ${1:string}Configuration : IEntityTypeConfiguration<${1:string}>",
+      "{",
+      "    public void Configure(EntityTypeBuilder<${1:string}> builder)",
+      "    {",
+      "        builder.HasData(new()",
+      "        {",
+      "",
+      "        }, new()",
+      "        {",
+      "",
+      "        });",
+      "    }",
+      "}",
+      ""
+    ],
+    "description": "dal configuation",
+    "scope": "csharp"
+  }
+}

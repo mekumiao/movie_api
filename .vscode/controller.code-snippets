@@ -1,0 +1,94 @@
+{
+  "web controller": {
+    "prefix": ["ctrl", "control", "controller"],
+    "body": [
+      "using Microsoft.AspNetCore.Mvc;",
+      "using MovieAPI.DAL;",
+      "using MovieAPI.Model;",
+      "using MovieAPI.Web.Models;",
+      "",
+      "namespace MovieAPI.Web.Controllers;",
+      "",
+      "public class ${1:Name}Controller : MyBaseController",
+      "{",
+      "    private readonly MovieDbContext _dbContext;",
+      "",
+      "    public ${1:Name}Controller(MovieDbContext dbContext)",
+      "    {",
+      "        _dbContext = dbContext;",
+      "    }",
+      "",
+      "}",
+      ""
+    ],
+    "description": "create an web controller"
+  },
+  "controller action get": {
+    "prefix": ["cget"],
+    "body": [
+      "[HttpGet(\"{id:long}\")]",
+      "[ProducesResponseType(typeof(OutputResult<${1:string}>), StatusCodes.Status200OK)]",
+      "public async Task<${1:string}?> GetAsync([FromRoute] long id)",
+      "{",
+      "    ${2:throw new NotImplementedException();}",
+      "}"
+    ],
+    "scope": "csharp"
+  },
+  "controller action list": {
+    "prefix": ["clist"],
+    "body": [
+      "[HttpGet]",
+      "[ProducesResponseType(typeof(OutputResult<PaginatedList<${1:string}>>), StatusCodes.Status200OK)]",
+      "public async Task<PaginatedList<${1:string}>> ListAsync(",
+      "    [FromServices] IEventBus eventBus,",
+      "    [FromQuery] int? no,",
+      "    [FromQuery] int? size,",
+      "    [FromQuery] bool? hasTotal,",
+      "    [FromQuery, StringColumn] string? q,",
+      "    [FromQuery, StringColumn] string? sorting)",
+      "{",
+      "    ${2:throw new NotImplementedException();}",
+      "}"
+    ],
+    "scope": "csharp"
+  },
+  "controller action add": {
+    "prefix": ["cadd"],
+    "body": [
+      "[HttpPost]",
+      "[ProducesResponseType(typeof(OutputResult<long>), StatusCodes.Status200OK)]",
+      "public async Task<long> AddAsync([FromBody] ${1:string} input)",
+      "{",
+      "    ${2:throw new NotImplementedException();}",
+      "}"
+    ],
+    "scope": "csharp"
+  },
+  "controller action update": {
+    "prefix": ["cupd", "cupdate"],
+    "body": [
+      "[HttpPut(\"{id:long}\")]",
+      "[ProducesResponseType(typeof(OutputResult<int>), StatusCodes.Status200OK)]",
+      "public async Task<int> UpdateAsync(",
+      "    [FromRoute, Range(1, long.MaxValue)] long id,",
+      "    [FromBody] ${1:string} input)",
+      "{",
+      "    ${2:throw new NotImplementedException();}",
+      "}"
+    ],
+    "scope": "csharp"
+  },
+  "controller action delete": {
+    "prefix": ["cdel", "cdelete"],
+    "body": [
+      "[HttpDelete(\"{id:long}\")]",
+      "[ProducesResponseType(typeof(OutputResult<int>), StatusCodes.Status200OK)]",
+      "public async Task<int> DeleteAsync([FromRoute, Range(1, long.MaxValue)] long id)",
+      "{",
+      "    ${1:throw new NotImplementedException();}",
+      "}"
+    ],
+    "scope": "csharp"
+  }
+}
